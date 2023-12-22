@@ -3,7 +3,10 @@ import AnonymousLayout from "../layouts/AnonymousLayout";
 import HomeLayout from "../layouts/HomeLayout";
 import Home from "../views/Home";
 import Detail from "../views/Detail";
-import Auth from "../views/Auth";
+
+import {lazy} from "react";
+const Login = lazy(() => import("../views/Auth/Login/index"));
+const Register = lazy(() => import("../views/Auth/Register/index"));
 
 
 export const routes = [
@@ -13,9 +16,29 @@ export const routes = [
             {
                 name: 'auth',
                 title: 'Auth page',
-                component: Auth,
-                path: '/auth',
-                isPublic: true,
+                routes: [
+                    {
+                        name: 'auth',
+                        title: 'Auth page',
+                        path: '/auth',
+                        isPublic: true,
+                        navigateTo: "/auth/login"
+                    },
+                    {
+                        name: 'login',
+                        title: 'Login page',
+                        component: Login,
+                        path: '/auth/login',
+                        isPublic: true,
+                    },
+                    {
+                        name: 'register',
+                        title: 'Register page',
+                        component: Register,
+                        path: '/auth/register',
+                        isPublic: true,
+                    }
+                ]
             }
         ]
     },

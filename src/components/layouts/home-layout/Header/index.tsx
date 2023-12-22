@@ -11,11 +11,14 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import {useSelector} from "react-redux";
+import {StateType} from "../../../../redux/root-reducers";
 
 const settings = ['Logout'];
 
 
 function Header() {
+    const {data} = useSelector((state: StateType) => state.user);
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -93,9 +96,12 @@ function Header() {
 
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
-                            </IconButton>
+                            <Box display="flex" alignItems="center">
+                                <Typography variant="h6" mr = {1}>{data ? data.username : ""}</Typography>
+                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                    <Avatar alt={data ? data.username.split('')[0] : "U"} src="#"/>
+                                </IconButton>
+                            </Box>
                         </Tooltip>
                         <Menu
                             sx={{mt: '45px'}}
