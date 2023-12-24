@@ -1,43 +1,42 @@
-
 import './App.css'
 import {Routes} from './routes';
 import Cookies from "js-cookie"
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import {useDispatch, useSelector} from "react-redux";
-import {StateType} from "./redux/root-reducers";
 import {useEffect, useState} from "react";
-import {AUTO_LOGIN_WITH_TOKEN} from "./redux/auth/types";
+import {AUTO_LOGIN_WITH_TOKEN, UserStateType} from "./redux/auth/types";
+import {useThemeContext} from "./contexts/theme";
 
 function App() {
-    const {data} = useSelector((state: StateType) => state.user);
+    const theme = useThemeContext();
+    const isDark = theme.isDark;
+    const {data, isLogout} = useSelector((state: UserStateType) => state.user);
     const dispatch = useDispatch();
     const [token, setToken] = useState(Cookies.get('token') || null)
     useEffect(() => {
-        if (data) {
-            console.log(data, 'data')
-            Cookies.set('token', data.token, {expires: 1})
-
-        }
-        console.log(token, data, 'token')
-        if(token && !(data)) {
-
-            dispatch({type: AUTO_LOGIN_WITH_TOKEN, payload: token})
+        if(!isLogout) {
+            if (data) {
+                Cookies.set('token', data.token, {expires: 1})
+            }
+            if (Cookies.get('token') && !(data)) {
+                dispatch({type: AUTO_LOGIN_WITH_TOKEN, payload: token})
+            }
+        } else {
+            setToken(null)
         }
     }, [data, token])
-    const darkTheme = createTheme({
+    const themeMaterial = createTheme({
         palette: {
-            mode: 'light',
+            mode: isDark ? 'dark' : "light",
         },
     });
 
     return (
-        <>
-            <ThemeProvider theme={darkTheme}>
-                <CssBaseline/>
-                <Routes isAuthorized={!!data || !!token}/>
-            </ThemeProvider>
-        </>
+        <ThemeProvider theme={themeMaterial}>
+            <CssBaseline/>
+            <Routes isAuthorized={!!data || !!token}/>
+        </ThemeProvider>
     )
 }
 

@@ -1,11 +1,12 @@
 {
   "users": [
     {
-      "username": "sadasd",
+      "username": "eco-user",
       "password": "123D$%4sd",
-      "token": "b987a17a-a4d9-4a64-b0b0-395f249a5c1c",
-      "id": 3
+      "token": "e7e46e7f-f5ed-4842-9c00-fd254f70906d",
+      "id": 1
     }
   ],
-  "todo": []
+  "todo": [
+  ]
 }

@@ -6,25 +6,18 @@ import {SyntheticEvent, useEffect, useState} from "react";
 import YupValidation from "./YupValidation";
 
 import {useDispatch, useSelector} from "react-redux";
-import {StateType} from "../../../redux/root-reducers";
-import {LOGIN_USER} from "../../../redux/auth/types";
+import {LOGIN_USER, UserStateType} from "../../../redux/auth/types";
 
 const Login = () => {
-    // to handle pending requests when component unmounted to avoid memory leak
-    let isSubscribed = true;
 
-    const {data, isLoading, errors} = useSelector((state: StateType) => state.user);
+    const {data, isLoading, errors} = useSelector((state: UserStateType) => state.user);
     const dispatch = useDispatch();
     const [snackbar, setSnackbar] = useState({
         isOpen: false,
         severity: "success",
         message: ""
     });
-    useEffect(() => {
-        return () => {
-            isSubscribed = false;
-        };
-    }, [])
+
     const initialValue = {
         username: "",
         password: "",

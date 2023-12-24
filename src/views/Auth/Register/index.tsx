@@ -1,14 +1,19 @@
-import {Box, Button, CircularProgress, TextField} from "@mui/material";
+import {Alert, Box, Button, CircularProgress, Snackbar, Stack, TextField} from "@mui/material";
 import {Link} from "react-router-dom";
 import {Formik, Field, Form, ErrorMessage} from "formik";
 import YupValidation from "./YupValidation";
-import {useEffect, useState} from "react";
+import {SyntheticEvent, useEffect, useState} from "react";
 import {UserType} from "../../../types/auth";
 import {v4 as uuidv4} from 'uuid';
 import authService from "../../../services/auth";
 const Register = () => {
     // to handle pending requests when component unmounted to avoid memory leak
     let isSubscribed = true;
+    const [snackbar, setSnackbar] = useState({
+        isOpen: false,
+        severity: "success",
+        message: ""
+    });
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         return () => {
@@ -30,19 +35,45 @@ const Register = () => {
         }).then((res: UserType) => {
             if (isSubscribed) {
                 setIsLoading(false)
+                setSnackbar({
+                    isOpen: true,
+                    severity: "success",
+                    message: "User is created successfully!"
+                });
                 props.resetForm();
             }
         }).catch(error => {
             if (isSubscribed) {
                 setIsLoading(false)
+                setSnackbar({
+                    isOpen: true,
+                    severity: "error",
+                    message: "Something went wrong...!"
+                });
             }
         })
 
 
     };
+    const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
+        setSnackbar({
+            ...snackbar,
+            isOpen: false,
+        });
+    };
     return (
         <>
+            <Stack spacing={2} sx={{width: '100%'}}>
+                <Snackbar open={snackbar.isOpen} autoHideDuration={3000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity={snackbar.severity} sx={{width: '100%'}}>
+                        {snackbar.message}
+                    </Alert>
+                </Snackbar>
+            </Stack>
             <Box>
                 <Formik
                     initialValues={initialValue}

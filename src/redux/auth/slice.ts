@@ -7,6 +7,7 @@ const usersInitialState: IUserState = {
     data: null,
     isLoading: false,
     errors: '',
+    isLogout: false,
 }
 
 export const usersSlice = createSlice({
@@ -14,20 +15,33 @@ export const usersSlice = createSlice({
     initialState: usersInitialState,
     reducers: {
         loginBeginAction: (state: IUserState) => {
-            state.isLoading = true;
-            state.errors = '';
+            return {
+                ...state,
+                isLoading: true,
+                errors: '',
+            }
         },
         loginSuccessAction: (state: IUserState, {payload: user}: PayloadAction<UserType>) => {
-            state.isLoading = false;
-            state.data = user;
+            return {
+                ...state,
+                isLoading: false,
+                data: user,
+                isLogout: false,
+            }
         },
         loginErrorAction: (state: IUserState, {payload: error}: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.errors = error;
+            return {
+                ...state,
+                isLoading: false,
+                errors: error,
+            }
         },
-        autoLoginAction: (state: IUserState, {payload: user}: PayloadAction<UserType>) => {
-            state.isLoading = false;
-            state.data = user;
+        logoutAction: (state: IUserState, {}) => {
+            return {
+                ...state,
+                data: null,
+                isLogout: true,
+            }
         },
     }
 })
@@ -37,6 +51,6 @@ export const {
     loginBeginAction,
     loginSuccessAction,
     loginErrorAction,
-    autoLoginAction,
+    logoutAction,
 } = usersSlice.actions;
 export default usersSlice.reducer;

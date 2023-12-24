@@ -5,6 +5,7 @@ export default () => {
 
     let headers = {};
 
+    // for backend request, set token on request header if user has logged in and cookie is set
     const token = Cookies.get("token")
     if (token) {
         headers["Authorization"] = token;
@@ -17,7 +18,7 @@ export default () => {
     AxiosInstance.interceptors.response.use(
         (response) =>
             new Promise((resolve, reject) => {
-                resolve(response.data);
+                resolve(response);
             }),
         (error) => {
             if (!error.response) {
@@ -28,8 +29,10 @@ export default () => {
             // global error handler
             switch (error.response.status) {
                 case 401:
-                    // const navigate = useNavigate();
-                    // navigate("/auth/login");
+                    window.location.href = '/auth/login'
+                    break;
+                case 500:
+
                     break;
 
                 default:

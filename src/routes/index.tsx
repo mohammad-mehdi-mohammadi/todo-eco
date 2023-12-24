@@ -1,12 +1,12 @@
 import {renderRoutes} from "./generate-routes";
 import AnonymousLayout from "../layouts/AnonymousLayout";
 import HomeLayout from "../layouts/HomeLayout";
-import Home from "../views/Home";
-import Detail from "../views/Detail";
 
 import {lazy} from "react";
 const Login = lazy(() => import("../views/Auth/Login/index"));
 const Register = lazy(() => import("../views/Auth/Register/index"));
+const Home = lazy(() => import("../views/Home/index"));
+const Detail = lazy(() => import("../views/Detail/index"));
 
 
 export const routes = [
@@ -55,7 +55,7 @@ export const routes = [
                 name: 'detail',
                 title: 'Detail page',
                 component: Detail,
-                path: '/detail'
+                path: '/detail/:id'
             },
 
         ]

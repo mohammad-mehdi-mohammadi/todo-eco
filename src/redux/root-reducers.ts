@@ -1,11 +1,10 @@
-import {UserStateType} from "./auth/types";
+
 import usersReducer from "./auth/slice";
-export type StateType = {
-    user: UserStateType;
-};
+import todoReducer from "./todo/slice";
 
 const rootReducers = {
     user: usersReducer,
+    todo: todoReducer,
 };
 
 export default rootReducers;
