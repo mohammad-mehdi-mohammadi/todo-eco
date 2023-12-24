@@ -89,9 +89,7 @@ function Header() {
     const onLogout = () => {
         setAnchorElNav(null);
         Cookies.remove("token")
-        dispatch({
-            type: logoutAction
-        })
+        dispatch(logoutAction())
     };
 
     const handleCloseUserMenu = () => {

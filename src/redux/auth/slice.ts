@@ -36,7 +36,7 @@ export const usersSlice = createSlice({
                 errors: error,
             }
         },
-        logoutAction: (state: IUserState, {}) => {
+        logoutAction: (state: IUserState) => {
             return {
                 ...state,
                 data: null,
